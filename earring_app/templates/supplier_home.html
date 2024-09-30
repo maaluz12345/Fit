@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+  <h1>Supplier Home</h1>
+  <h2>Supply Requests</h2>
+  <table>
+    <tr>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+    {% for request in requests %}
+    <tr>
+      <td>{{ request.product.name }}</td>
+      <td>{{ request.quantity }}</td>
+      <td>{{ request.get_status_display }}</td>
+      <td>
+        <a href="{% url 'manage_supply_request' request.id %}">Manage</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+    
+</body>
+</html>

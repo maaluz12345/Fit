@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product and Orders Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Styling the body and overall page appearance */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f4f4f4, #ececec);
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 3em;
+            color: #444;
+            font-weight: 600;
+        }
+
+        .chart-container {
+            width: 80%; /* Ensure consistent width across all containers */
+            margin: 20px auto; /* Centering with auto margins */
+            padding: 20px;
+            background: linear-gradient(135deg, #ffffff, #f0f0f0);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .chart-container:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        canvas {
+            padding: 20px;
+            max-height: 500px; /* Set a max height to maintain uniformity */
+            width: 100%; /* Make canvas responsive */
+        }
+
+        /* Hover effect for the charts */
+        canvas:hover {
+            transform: scale(1.05);
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 768px) {
+            .chart-container {
+                width: 90%; /* Adjust width for smaller screens */
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Product and Order Data Visualization</h1>
+    
+    <!-- Bar Chart for Products -->
+    <div class="chart-container">
+        <canvas id="barChart"></canvas>
+    </div>
+
+    <!-- Pie Chart for Product Quantities -->
+    <div class="chart-container">
+        <canvas id="pieChart"></canvas>
+    </div>
+
+    <!-- Line Chart for Total Sales over Time -->
+    <div class="chart-container">
+        <canvas id="lineChart"></canvas>
+    </div>
+
+    <!-- Pie Chart for Order Status Distribution -->
+    <div class="chart-container">
+        <canvas id="orderStatusPieChart"></canvas>
+    </div>
+
+    <script>
+        // Get data from Django context
+        const productNames = {{ product_names|safe }};
+        const productPrices = {{ product_prices|safe }};
+        const productQuantities = {{ product_quantities|safe }};
+        const orderTotals = {{ order_totals|safe }};
+        const orderDates = {{ order_dates|safe }};
+        const statusCounts = {{ status_counts|safe }};
+
+        // Bar Chart for Product Prices and Quantities
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        const barChart = new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: productNames,
+                datasets: [
+                    {
+                        label: 'Product Prices',
+                        data: productPrices,
+                        backgroundColor: 'rgba(75, 192, 192, 0.7)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        hoverBackgroundColor: 'rgba(75, 192, 192, 0.9)',
+                    },
+                    {
+                        label: 'Product Quantities',
+                        data: productQuantities,
+                        backgroundColor: 'rgba(153, 102, 255, 0.7)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1,
+                        hoverBackgroundColor: 'rgba(153, 102, 255, 0.9)',
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true }
+                },
+                plugins: {
+                    title: { display: true, text: 'Product Prices and Quantities', font: { size: 22, weight: 'bold' } }
+                }
+            }
+        });
+
+        // Pie Chart for Product Quantities
+        const pieCtx = document.getElementById('pieChart').getContext('2d');
+        const pieChart = new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: productNames,
+                datasets: [{
+                    label: 'Product Quantities',
+                    data: productQuantities,
+                    backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#4bc0c0', '#9966ff', '#ff9f40'],
+                    borderColor: ['#fff'],
+                    borderWidth: 2,
+                    hoverBackgroundColor: ['#ff7f9b', '#57b6f5', '#ffd56a', '#5ad0d0', '#b083ff', '#ffb36e'],
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: { display: true, text: 'Product Quantity Distribution', font: { size: 22, weight: 'bold' } },
+                },
+            }
+        });
+
+        // Line Chart for Total Sales over Time
+        const lineCtx = document.getElementById('lineChart').getContext('2d');
+        const lineChart = new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: orderDates,
+                datasets: [{
+                    label: 'Total Sales',
+                    data: orderTotals,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    fill: true,
+                    borderWidth: 2,
+                    hoverBackgroundColor: 'rgba(54, 162, 235, 0.8)',
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                },
+                plugins: {
+                    title: { display: true, text: 'Total Sales Over Time', font: { size: 22, weight: 'bold' } }
+                }
+            }
+        });
+
+        // Pie Chart for Order Status Distribution
+        const orderStatusCtx = document.getElementById('orderStatusPieChart').getContext('2d');
+        const orderStatusPieChart = new Chart(orderStatusCtx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(statusCounts),
+                datasets: [{
+                    label: 'Order Status',
+                    data: Object.values(statusCounts),
+                    backgroundColor: ['#4bc0c0', '#ffcd56', '#ff6384'],
+                    borderColor: '#fff',
+                    borderWidth: 2,
+                    hoverBackgroundColor: ['#63d1d1', '#ffe176', '#ff7f99'],
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: { display: true, text: 'Order Status Distribution', font: { size: 22, weight: 'bold' } },
+                },
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eEarrings</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #9f9898;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+        }
+
+        .navbar a {
+            color: #333;
+            text-decoration: none;
+            margin-right: 15px;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #757f89;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-gap: 30px;
+            justify-items: center;
+        }
+
+        .product {
+            background-color: #fff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            transition: box-shadow 0.3s;
+        }
+
+        .product:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .product img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 16px;
+            margin-bottom: 15px;
+        }
+
+        .product-info {
+            padding-bottom: 15px;
+        }
+
+        .buy-now-button {
+            display: inline-block;
+            padding: 10px 20px;
+            text-decoration: none;
+            background-color: #1463b8;
+            color: #fff;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .buy-now-button:hover {
+            background-color: #0056b3;
+        }
+.form-inline {
+    display: flex;
+    align-items: center;
+}
+
+.form-control {
+    width: auto; /* Adjust the width as needed */
+}
+
+.btn-outline-success {
+    color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-outline-success:hover {
+    color: #fff;
+    background-color: #28a745;
+}
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'index' %}">FitBurn</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Left side of the navbar -->
+            <div class="mr-auto">
+                <form method="GET" action="{% url 'product_list' %}" class="form-inline">
+                    <input type="text" name="search" placeholder="Search for products.." class="form-control mr-2">
+                    <button type="submit" class="btn btn-outline-success">Search</button>
+                </form>
+                
+                
+            </div>
+            <!-- Right side of the navbar -->
+            <ul class="navbar-nav">
+                <li class="nav-item ">
+                    <a class="nav-link" href="{% url 'product_list' %}">ALL PRODUCTS</a>
+                </li>
+                <!-- Other navbar items here -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'view_cart' %}">Cart</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'orders' %}">Orders</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Categories
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'index' %}?category=1">CARDIO</a>
+                        <a class="dropdown-item" href="{% url 'index' %}?category=5">STRENGTH TRAINING</a>
+                        <a class="dropdown-item" href="{% url 'index' %}?category=2">FLEXIBILITY</a>
+                        <a class="dropdown-item" href="{% url 'index' %}?category=3">ADVENTURE</a>
+                        <a class="dropdown-item" href="{% url 'index' %}?category=4">PILATES</a>
+                    </div>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'prediction' %}">Prediction</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'chatbot' %}">Chatbot</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'view_profile' %}">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}" style="color: orangered;">logout</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+
+    <h2>Products</h2>
+    <div class="container">
+        <div class="product-list">
+        {% for product in products %}
+            <div class="product">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="height:300px">
+                <div class="product-info">
+                    <h3>{{ product.name }}</h3>
+                    <p class="price">Price: &#8377;{{ product.price }} INR</p>
+                </div>
+                <div style="margin-bottom: 10px;">
+                <a class="buy-now-button" href="{% url 'product_detail' product.id %}">View Details</a>
+            </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+  <h1>Manage Supply Request</h1>
+  <p>Product: {{ supply_request.product.name }}</p>
+  <p>Supplier: {{ supply_request.supplier.name }}</p>
+  <p>Quantity: {{ supply_request.quantity }}</p>
+  <p>Status: {{ supply_request.get_status_display }}</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" name="action" value="accept">Accept</button>
+    <button type="submit" name="action" value="reject">Reject</button>
+  </form>
+
+
+</body>
+</html>

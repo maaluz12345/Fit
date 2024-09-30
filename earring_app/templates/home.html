@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home | FitBurn</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            display: flex;
+        }
+
+        /* Navigation */
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .nav-items {
+            display: inline;
+            font-size: 18px;
+        }
+
+        .nav-items a {
+            color: #007bff;
+            text-decoration: none;
+            margin-right: 15px;
+            transition: color 0.3s ease-in-out;
+            border: 1px solid #007bff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .nav-items a:hover {
+            background-color: #5f7878;
+            color: #fff;
+        }
+
+        /* Dashboard Navigation Bar */
+        .dashboard-nav {
+            background-color: #007bff;
+            padding: 0;
+            margin: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .dashboard-nav h3 {
+            margin: 0;
+            top: 0;
+            font-size: 24px;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            background-color: #2c3e50;
+            width: 250px;
+            height: 100vh; /* Full height */
+            padding: 0px;
+            color: #ecf0f1;
+            position: fixed;
+            box-shadow: 0px 0 5px rgba(0, 0, 0, 0.1);
+            margin-top: 60px; /* Adjust for the dashboard nav */
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin: 0;
+            font-size: 24px;
+            color: #ecf0f1;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            margin: 10px 0;
+        }
+
+        .sidebar a {
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 0px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #3498db;
+        }
+
+        .sidebar a.active {
+            background-color: #3498db; /* Active link color */
+            font-weight: bold;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            margin-left: 270px; /* Space for the sidebar */
+            padding: 20px;
+            flex-grow: 1; /* Allows the main content to fill the remaining space */
+        }
+
+        /* Admin Title Styling */
+        .admin-title {
+            text-align: center;
+            font-size: 28px;
+            margin-top: 0px;
+            color: #007bff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Product List Styling */
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-gap: 20px;
+            padding: 20px;
+        }
+
+        .product-lists {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(158, 150, 150, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .product-name {
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 20px;
+            color: #7c1c1c;
+        }
+
+        .product-description,
+        .product-price,
+        .product-details {
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .image {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .link {
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .edit-link {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .delete-link {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .add-pen-link {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: #678d70;
+            color: #08ec35;
+            margin-top: 20px;
+        }
+
+        .edit-link:hover,
+        .delete-link:hover,
+        .add-pen-link:hover {
+            opacity: 0.8;
+        }
+
+        .no-products {
+            color: #333;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <ul class="nav-list">
+        <li class="nav-items">
+            <a href="{% url 'home' %}" class="home-link">Home</a>
+            <a href="{% url 'add_category' %}" class="add-category-link">Add Category</a>
+            <a href="{% url 'add_product' %}" class="add-bag-link">Add Equipments</a>
+            <a href="{% url 'all_orders' %}" class="add-bag-link">Orders</a>
+            <a href="{% url 'adminlogout' %}" class="home-link" style="color: orangered;">Logout</a>
+        </li>
+    </ul>
+
+    <div class="dashboard-nav">
+       
+    </div>
+
+    <div class="sidebar">
+        <h2>Admin Dashboard</h2>
+        <ul>
+            
+            <li><a href="{% url 'visualization' %}">Visualization Tools</a></li>
+            <li><a href="{% url 'report_view' %}">Reports</a></li>
+            <li><a href="{% url 'user_management' %}">Profile Settings</a></li>
+           
+        </ul>
+    </div>
+
+    <div class="main-content">
+        
+        <h2 class="section-title">FitBurn</h2>
+        <br>
+
+        <ul class="product-list">
+            {% for product in products %}
+                <li class="product-lists">
+                    <div class="product-details">
+                        <strong class="product-name">{{ product.name }}</strong>
+                        <p class="product-description">Description: {{ product.description }}</p>
+                        <p class="product-price">Price: &#8377;{{ product.price }} INR</p>
+                        <p class="product-details">Category: {{ product.category }}</p>
+                        <p class="product-quantity">Availability: {{ product.quantity }}</p>
+                        <p class="product-image"><img src="{{ product.image.url }}" alt="{{ product.name }}" class="image"></p>
+                        <a href="{% url 'edit_product' product.id %}" class="link edit-link">Edit</a>
+                        <a href="{% url 'delete_product' product.id %}" class="link delete-link">Delete</a>
+                    </div>
+                </li>
+            {% empty %}
+                <p class="no-products">No Equipments available.</p>
+            {% endfor %}
+        </ul>
+
+        <a href="{% url 'add_product' %}" class="link add-pen-link">Add Equipment</a>
+    </div>
+</body>
+</html>
