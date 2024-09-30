@@ -53,6 +53,9 @@ def login_view(request):
             return HttpResponse("<script>alert('Username or Password is incorrect');window.location='../login';</script>")
     return render(request, 'login.html')
 
+def about(request):
+    return render(request, 'about.html')
+
 def forgot_password(request):
     if request.method == 'POST':
         email = request.POST['email']

@@ -5,11 +5,12 @@ from django.contrib import admin
 from .views import (add_category, add_to_cart, ship_order, deliver_order, checkout, orders, all_orders, ordered_items, 
                     aordered_items, confirm_purchase, alogout_view, login_view, forgot_password, forgot1, password_new, 
                     myprofile, edit_profile, product_detail, register_request, logout_view, home, add_product, edit_product, 
-                    delete_product, product_list, index_home, remove_from_cart, thank_you_page, view_cart, first)
+                    delete_product, product_list, index_home, remove_from_cart, thank_you_page, view_cart, first,about)
 from . import views
 
 urlpatterns = [
     path('', first, name='first'),
+    path('about/', about, name='about'),
     path('products/', product_list, name='product_list'),
     path('admin/', admin.site.urls),  # Optional, admin panel
     path('login/', login_view, name='login'), 
