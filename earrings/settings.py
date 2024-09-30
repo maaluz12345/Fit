@@ -32,7 +32,7 @@ GEMINI_API_KEY = "AIzaSyDD_qBFrpXrWWewVDDlr91hlDcFmdm9CC4"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
