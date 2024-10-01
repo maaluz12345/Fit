@@ -616,3 +616,20 @@ def chatbot(request):
         return JsonResponse({'response': response.text})
     
     return render(request, 'chatbot.html')
+
+@login_required
+def predictions(request):
+    if request.method == 'POST':
+        weight = request.POST.get('weight', '')
+        duration = request.POST.get('duration', '')
+        activity_type = request.POST.get('activity_type', '')
+
+        # Create input prompt for the Gemini API
+        prompt = f"Predict the calories burned for a {activity_type} activity with weight {weight} kg for {duration} minutes."
+        
+        # Generate a response using Gemini
+        response = model.generate_content(prompt)
+        
+        return JsonResponse({'calories_burned': response.text})
+
+    return render(request, 'predictions.html')

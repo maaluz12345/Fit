@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Prediction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Calorie Burn Prediction</h2>
+        <form id="predictionForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="weight">Weight (kg)</label>
+                <input type="number" id="weight" name="weight" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="duration">Duration (minutes)</label>
+                <input type="number" id="duration" name="duration" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="activity_type">Activity Type</label>
+                <select id="activity_type" name="activity_type" class="form-control" required>
+                    <option value="">Select Activity</option>
+                    <option value="Running">Running</option>
+                    <option value="Cycling">Cycling</option>
+                    <option value="Swimming">Swimming</option>
+                    <option value="Weightlifting">Weightlifting</option>
+                    <option value="Yoga">Yoga</option>
+                    <option value="Walking">Walking</option>
+                    <option value="HIIT">High-Intensity Interval Training</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Predict Calories Burned</button>
+        </form>
+        <div id="result" class="mt-4"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $('#predictionForm').on('submit', function(e) {
+            e.preventDefault();
+            const formData = $(this).serialize();
+
+            $.ajax({
+                type: "POST",
+                url: "{% url 'predictions' %}",  // Ensure this matches the correct URL name
+                data: formData,
+                success: function(data) {
+                    $('#result').html(`${data.calories_burned}`); // Display only the calories burned
+                },
+                error: function(xhr) {
+                    $('#result').html(`<h4>Error: ${xhr.responseText}</h4>`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

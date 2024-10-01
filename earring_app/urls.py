@@ -50,7 +50,8 @@ urlpatterns = [
     path('report/', views.report_view, name='report_view'),
     path('users_data/', views.user_management, name='user_management'),
     path('users/delete/<int:user_id>/', views.delete_user, name='delete_user'),
-    path('chatbot/', views.chatbot, name='chatbot')
+    path('chatbot/', views.chatbot, name='chatbot'),
+    path('predictions/', views.predictions, name='predictions'),
 ]
 
 if settings.DEBUG:
